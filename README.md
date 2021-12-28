@@ -1,5 +1,4 @@
-# 머신러닝 기반 제2형 당뇨병 진단 사전 예측 모형
-### 실제 진료 데이터(Real World Data, RWD)를 활용한 당뇨병 진단 사전 예측 모형 개발
+![image](https://user-images.githubusercontent.com/38115693/147531854-d22d0182-5efd-46a2-8deb-bf30565efa11.png)
 ---
 
 #### 프로젝트 팀: 김대영, 박성호
