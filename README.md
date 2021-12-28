@@ -270,14 +270,14 @@ Random Oversampling을 적용했을 때엔, 평균적으로 이와 같은 예측
 
 Wt, Ht 피처들을 제외한 두 모델도 구간으로 나누어 범주화한 데이터셋을 사용하여 모델링한 결과보다는 예측 성능이 더 좋은 것으로 보여진다. Wt, Ht를 포함하여 모델링 했을 때의 결과와 비교하면, accuracy 결과는 비슷하지만, recall은 Wt, Ht 피처들을 포함했을 때의 결과가 더 좋기 때문에, Wt, Ht 피처들을 포함하는 경우 더 좋은 모델로 판단된다.
 
-다음으로,
+다음으로, 기존 연속형 피처들을 Standard Scaling을 적용하는 것에 age 피처를 포함하여 진행하였다. 
 - (1) gender 피처에 대해서만 One-Hot Encoding을 적용하고,
 - (2) 이번엔 age 피처를 Standard Scaling 과정에 포함하여 다른 연속형 변수들과 함께 스케일링하여 진행하였다.
-- (3) 그리고 앞서 설명한 과정과 동일한 과정을 거쳐 학습과 테스트를 진행하였으며, Wt, Ht 피처들을 포함하였을 때의 결과는 아래와 같다.
+- (3) 그리고 앞서 설명한 과정과 동일한 과정을 거쳐 학습과 테스트를 진행하였으며, Wt, Ht 피처들을 포함하였을 때의 결과가 아래와 같다.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/38115693/147504845-ca463740-bcfd-4eb4-9f09-9d6a08092a8b.png" width="75%" height=""></p>
 
-Age 피처를 스케일링에 포함한 모델에 SMOTE-NC를 적용했을 때에, 평균적으로 이와 같은 예측 성능을 얻었다.
+SMOTE-NC를 적용했을 때에, 평균적으로 이와 같은 예측 성능을 얻었다.
 - Logistic Regression: accuracy 85%, recall 82%
 - SVM: accuracy 84%, recall 82%
 
