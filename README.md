@@ -214,9 +214,13 @@ VIF 값이 가장 큰 변수들 중 Ht, Wt를 먼저 제외하고, 이후 DBP, T
 ## 모델링 결과
 
 ### 각 수치를 구간별로 나눠 범주화 한 데이터 기준 모델링
-범주화 한 데이터에 (1) One-Hot Encoding을 적용하고, 별도로 범주화하지 않은 연속형으로 남아있는 (2) Wt, Ht 피처들을 Standard Scaling을 적용하여 합친 후 모델링을 시도하였다. 오버샘플링으로 범주형+연소형 데이터에 적합한 (3) SMOTE-NC와 RandomOversampling를 적용한 결과, 이 중 ROS을 적용했을 때의 모델의 예측 성능이 가장 좋았다.
 
-하지만 연속형인 (2) Wt, Ht를 제외하고 범주화 한 피처들만을 사용하여서도 학습 및 테스트를 해 보았고, 결과적으로 더 좋은 예측 성능을 얻을 수 있었다.
+구간으로 나누어 범주화 하여 생성한 데이터에 
+- (1) One-Hot Encoding을 적용하고,
+- (2) 별도로 범주화하지 않은 연속형으로 남아있는 Wt, Ht 피처들을 Standard Scaling을 적용하여 합쳤다.
+- (3) 이후, 오버샘플링으로 범주형+연소형 데이터에 적합한 SMOTE-NC와 RandomOversampling를 적용한 결과, 이 중 ROS을 적용했을 때의 모델의 예측 성능이 가장 좋았다.
+
+하지만 연속형인 (2) Wt, Ht를 제외하고 범주화 한 피처들만을 사용하여서도 학습 및 테스트를 해 보았고, 결과적으로 아래의 더 나은 예측 성능을 얻을 수 있었다.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/38115693/147502365-93d6dfdc-13af-4d72-bcc2-f4812c19e3ea.png" width="40%" height=""></p>
 
@@ -226,7 +230,12 @@ One-Hot Encoding과 ROS를 적용한 테스트 결과는 평균적으로 이와 
 - SVM: accuracy 77%, recall 74%
 
 ### 기존 연속형 데이터 기준 모델링
-1. 기존 연속형 데이터 기준으로 Standard Scaling을 적용하여 모델링을 시도하였다. 우선 (1) gender, age 피처에 대해 One-Hot Encoding을 적용하고, 'Data Leakage'를 피하기 위해 train-test split을 먼저 한 후 (2) 기존 연속형 변수들에 대해 Standard Scaling을 적용하였다. 마지막으로, (3) oversampling(SMOTENC, RandomOversampling) 기법을 적용하고 모델 학습과 테스트를 진행하였다.
+
+기존 연속형 데이터 기준으로 Standard Scaling을 적용하여 모델링을 하였다.
+
+- (1) 우선 gender, age 피처에 대해 One-Hot Encoding을 적용하고,
+- (2) 'Data Leakage'를 피하기 위해 train-test split을 먼저 한 후, 기존 연속형 변수들에 대해 Standard Scaling을 적용하였다.
+- (3) 마지막으로, oversampling(SMOTENC, RandomOversampling) 기법을 적용하고 모델 학습과 테스트를 진행한 결과는 아래와 같다.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/38115693/147503805-fc4534c4-4bc3-454a-b1fb-79cc92202e5b.png" width="75%" height=""></p>
 
@@ -261,7 +270,10 @@ Random Oversampling을 적용했을 때엔, 평균적으로 이와 같은 예측
 
 Wt, Ht 피처들을 제외한 두 모델도 구간으로 나누어 범주화한 데이터셋을 사용하여 모델링한 결과보다는 예측 성능이 더 좋은 것으로 보여진다. Wt, Ht를 포함하여 모델링 했을 때의 결과와 비교하면, accuracy 결과는 비슷하지만, recall은 Wt, Ht 피처들을 포함했을 때의 결과가 더 좋기 때문에, Wt, Ht 피처들을 포함하는 경우 더 좋은 모델로 판단된다.
 
-2. 다음으로, (1) gender 피처에 대해서만 One-Hot Encoding을 적용하고, 이번엔 (2) age 피처를 Standard Scaling 과정에 포함하여 다른 연속형 변수들과 함께 스케일링하여 진행하였다. 위와 동일한 과정을 거쳐 학습과 테스트를 진행하였으며, (3) Wt, Ht를 포함하였을 때의 결과는 아래와 같다.
+다음으로,
+- (1) gender 피처에 대해서만 One-Hot Encoding을 적용하고,
+- (2) 이번엔 age 피처를 Standard Scaling 과정에 포함하여 다른 연속형 변수들과 함께 스케일링하여 진행하였다.
+- (3) 그리고 앞서 설명한 과정과 동일한 과정을 거쳐 학습과 테스트를 진행하였으며, Wt, Ht 피처들을 포함하였을 때의 결과는 아래와 같다.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/38115693/147504845-ca463740-bcfd-4eb4-9f09-9d6a08092a8b.png" width="75%" height=""></p>
 
