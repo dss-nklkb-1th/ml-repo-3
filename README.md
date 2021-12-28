@@ -157,7 +157,7 @@ VIF 값이 가장 큰 변수들 중 Ht, Wt를 먼저 제외하고, 이후 DBP, T
 
 ![image](https://user-images.githubusercontent.com/38115693/147496168-a3211c99-e055-4805-bbf3-1771d3072fcf.png)
 
-1. 범주형 데이터를 사용한 모델링시 인코딩은 Label Encoding과 One-Hot Encoding을 각각 사용하였고, 연속형 데이터만으로 Standard Scaling을 따로 적용하여서도 모델링해 보았다.
+1. 범주형 데이터를 사용한 모델링시 인코딩은 **Label Encoding**과 **One-Hot Encoding**을 각각 사용하였고, 연속형 데이터만으로 **Standard Scaling**을 따로 적용하여서도 모델링해 보았다.
 2. Label 2437개 중 0: 2231개 / 1: 206개의 불균형 데이터이기 때문에, 불균형 데이터 처리를 위해 리샘플링을 하였는데, 데이터 양이 많지 않아 오버샘플링을 하기로 결정하였다.
 3. DecisionTree, KNN, LogisticRegression, RandomForest, XGBoost, SVM 분류기 등 9개의 모델을 사용해서 학습과 모델링을 진행하였다.
 
@@ -173,7 +173,7 @@ VIF 값이 가장 큰 변수들 중 Ht, Wt를 먼저 제외하고, 이후 DBP, T
 1. 데이터를 그룹화 하여 나눠 놨지만, 레이블 인코딩을 했을 때 각각의 수치 값이, 예를 들어, 정상 미만(0), 정상(1), 정상 이상(2) 등과 같은 순서가 있는 데이터처럼 되었기에, 레이블 인코딩를 사용해도 각 수치 값의 의미가 보존되지 않을까 생각하여 레이블 인코딩도 진행하였다.
 2. 선형 계열 모델(로직스틱회귀, SVM, 신경망 등)의 경우 숫자의 차이가 모델에 영향을 미치기 때문에, 레이블 인코딩된 결과에 이에 대한 영향이 있을 수도 있어 원핫인코딩 또한 별도로 적용하여 진행하였다.
 
-마지막으로, 당뇨병에 대한 조사를 하면서, 각 검사 수치에 대한 판단 기준이 자료마다, 병원마다 달랐고, 따라서 조사한 것과 자료들을 기반으로 판단하여 범주화한 것이 예측 성능에 영향을 줄 수도 있을 것 같아 기존의 연속형 변수들만을 사용하여 스케일링 적용 후 모델링하는 것도 시도하였다.
+마지막으로, 당뇨병에 대한 조사를 하면서, 각 검사 수치에 대한 판단 기준이 자료마다, 병원마다 달랐고, 따라서 조사한 것과 자료들을 기반으로 판단하여 범주화한 것이 예측 성능에 영향을 줄 수도 있을 것 같아 기존의 연속형 변수들만을 사용하여 Standard Scaling 적용 후 모델링하는 것 또한 시도하였다.
 
 그리고 성능 테스트 과정에서 의미가 있을 것으로 판단되는 경우 범주화된 데이터셋에 일부 스케일링된 변수를 추가하거나, 반대로 스케일링된 데이터셋에 범주형 변수를 합쳐서도 시도하였으며, 불필요하다고 여겨지거나 상관관계가 높은 변수들을 빼보기도 하였다.
 
@@ -195,7 +195,7 @@ VIF 값이 가장 큰 변수들 중 Ht, Wt를 먼저 제외하고, 이후 DBP, T
 
 각 전처리 및 오버샘플링 과정별로 하이퍼파라미터 튜닝을 진행하였는데, DecisionTree와 KNN을 베이스 모델로 시작하여, 다른 여러 모델들을 시도해 보면서 성능을 비교하며 파라미터 옵션을 추가하거나 값을 변경해 갔다.
 
-암 진단과 같이 당뇨병 진단도 실제 양성을 양성으로 예측하는 것이 중요하다고 판단하여, accuracy(정확도)와 함께 recall(재현율) 예측률을 높이는 것에 중점을 두어 파라미터 튜닝을 진행하였다.
+암 진단과 같이 당뇨병 진단도 실제 양성을 양성으로 예측하는 것이 중요하다고 판단하여, **accuracy(정확도)와 함께 recall(재현율) 예측률을 높이는 것에 중점**을 두어 파라미터 튜닝을 진행하였다.
 
 ![image](https://user-images.githubusercontent.com/38115693/147500056-cbd7a551-021a-4775-8f66-d14874de4910.png)
 
@@ -214,9 +214,13 @@ VIF 값이 가장 큰 변수들 중 Ht, Wt를 먼저 제외하고, 이후 DBP, T
 ## 모델링 결과
 
 ### 각 수치를 구간별로 나눠 범주화 한 데이터 기준 모델링
-범주화 한 데이터에 (1) One-Hot Encoding을 적용하고, 별도로 범주화하지 않은 연속형으로 남아있는 (2) Wt, Ht 피처들을 Standard Scaling을 적용하여 합친 후 모델링을 시도하였다. 오버샘플링으로 범주형+연소형 데이터에 적합한 (3) SMOTE-NC와 RandomOversampling를 적용한 결과, 이 중 ROS을 적용했을 때의 모델의 예측 성능이 가장 좋았다.
 
-하지만 연속형인 (2) Wt, Ht를 제외하고 범주화 한 피처들만을 사용하여서도 학습 및 테스트를 해 보았고, 결과적으로 더 좋은 예측 성능을 얻을 수 있었다.
+구간으로 나누어 범주화 하여 생성한 데이터에 
+- (1) One-Hot Encoding을 적용하고,
+- (2) 별도로 범주화하지 않은 연속형으로 남아있는 Wt, Ht 피처들을 Standard Scaling을 적용하여 합쳤다.
+- (3) 이후, 오버샘플링으로 범주형+연소형 데이터에 적합한 SMOTE-NC와 RandomOversampling를 적용한 결과, 이 중 ROS을 적용했을 때의 모델의 예측 성능이 가장 좋았다.
+
+하지만 연속형인 (2) Wt, Ht를 제외하고 범주화 한 피처들만을 사용하여서도 학습 및 테스트를 해 보았고, 결과적으로 아래의 더 나은 예측 성능을 얻을 수 있었다.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/38115693/147502365-93d6dfdc-13af-4d72-bcc2-f4812c19e3ea.png" width="40%" height=""></p>
 
@@ -226,7 +230,12 @@ One-Hot Encoding과 ROS를 적용한 테스트 결과는 평균적으로 이와 
 - SVM: accuracy 77%, recall 74%
 
 ### 기존 연속형 데이터 기준 모델링
-1. 기존 연속형 데이터 기준으로 Standard Scaling을 적용하여 모델링을 시도하였다. 우선 (1) gender, age 피처에 대해 One-Hot Encoding을 적용하고, 'Data Leakage'를 피하기 위해 train-test split을 먼저 한 후 (2) 기존 연속형 변수들에 대해 Standard Scaling을 적용하였다. 마지막으로, (3) oversampling(SMOTENC, RandomOversampling) 기법을 적용하고 모델 학습과 테스트를 진행하였다.
+
+기존 연속형 데이터 기준으로 Standard Scaling을 적용하여 모델링을 하였다.
+
+- (1) 우선 gender, age 피처에 대해 One-Hot Encoding을 적용하고,
+- (2) 'Data Leakage'를 피하기 위해 train-test split을 먼저 한 후, 기존 연속형 변수들에 대해 Standard Scaling을 적용하였다.
+- (3) 마지막으로, oversampling(SMOTENC, RandomOversampling) 기법을 적용하고 모델 학습과 테스트를 진행한 결과는 아래와 같다.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/38115693/147503805-fc4534c4-4bc3-454a-b1fb-79cc92202e5b.png" width="75%" height=""></p>
 
@@ -261,11 +270,14 @@ Random Oversampling을 적용했을 때엔, 평균적으로 이와 같은 예측
 
 Wt, Ht 피처들을 제외한 두 모델도 구간으로 나누어 범주화한 데이터셋을 사용하여 모델링한 결과보다는 예측 성능이 더 좋은 것으로 보여진다. Wt, Ht를 포함하여 모델링 했을 때의 결과와 비교하면, accuracy 결과는 비슷하지만, recall은 Wt, Ht 피처들을 포함했을 때의 결과가 더 좋기 때문에, Wt, Ht 피처들을 포함하는 경우 더 좋은 모델로 판단된다.
 
-2. 다음으로, (1) gender 피처에 대해서만 One-Hot Encoding을 적용하고, 이번엔 (2) age 피처를 Standard Scaling 과정에 포함하여 다른 연속형 변수들과 함께 스케일링하여 진행하였다. 위와 동일한 과정을 거쳐 학습과 테스트를 진행하였으며, (3) Wt, Ht를 포함하였을 때의 결과는 아래와 같다.
+다음으로, 기존 연속형 피처들을 Standard Scaling을 적용하는 것에 age 피처를 포함하여 진행하였다. 
+- (1) gender 피처에 대해서만 One-Hot Encoding을 적용하고,
+- (2) 이번엔 age 피처를 Standard Scaling 과정에 포함하여 다른 연속형 변수들과 함께 스케일링하여 진행하였다.
+- (3) 그리고 앞서 설명한 과정과 동일한 과정을 거쳐 학습과 테스트를 진행하였으며, Wt, Ht 피처들을 포함하였을 때의 결과가 아래와 같다.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/38115693/147504845-ca463740-bcfd-4eb4-9f09-9d6a08092a8b.png" width="75%" height=""></p>
 
-Age 피처를 스케일링에 포함한 모델에 SMOTE-NC를 적용했을 때에, 평균적으로 이와 같은 예측 성능을 얻었다.
+SMOTE-NC를 적용했을 때에, 평균적으로 이와 같은 예측 성능을 얻었다.
 - Logistic Regression: accuracy 85%, recall 82%
 - SVM: accuracy 84%, recall 82%
 
