@@ -17,7 +17,7 @@
 ## 데이터 소개
 당뇨병 사전 진단 예측 모델링을 위해 당뇨병 관련 실제 진료 데이터/실사용데이터(Real World Data, RWD)를 확보하여 사용하였다. 데이터셋은 성별, 나이 등 환자에 대한 기본 정보와 당뇨병 진단 여부, 그리고 혈압, 혈당, 콜레스테롤, 간, 신장 등과 관련된 여러 검사 수치에 대한 데이터로 이루어져 있다.
 
-총 2,438개의 행과 26개의 컬럼/피처로 구성되어 있는데, 이 중 당뇨병 진단을 받은 데이터가 206개인 불균형 데이터이다.
+총 2,438개의 행과 26개의 컬럼/피처로 구성되어 있는데, 이 중 당뇨병 진단을 받은 데이터가 206개인 **불균형 데이터**이다.
 
 ---
 ## EDA 및 전처리
@@ -31,7 +31,9 @@
 ### 라벨별 각 피처 분포도
 ![image](https://user-images.githubusercontent.com/38115693/147484996-1f8a17f3-2d3a-4ee3-af73-69b5245a755d.png)
 
-종속변수인 labels별(당뇨병 진단을 받은 경우 1, 아닌 경우 0) 각 피처의 분포도 확인 결과, 많은 변수들이 당뇨병 진단 여부와 상관없이 비슷한 분포를 띄고 있는 것처럼 보인다. 그 중에서 눈에 띄는 것은 혈당과 관련 된 피처들인 HbA1c, FBG, HDL 등인데, 혈당 관련 수치는 당뇨병 진단을 받은 집단이 좀 더 높은 값에 분포해 있는 것으로 보인다. 각 라벨별 피처의 평균값을 계산해 보면, 대부분의 피처에서 당뇨병 진단을 받은 데이터인 labels 1의 평균 수치가 더 높게 나타난다. 그런데 HDL의 경우 labels 0이 55.5로 labels 1의 49.8에 비해 더 높은 평균 수치를 가지고 있다. 당뇨병 진단을 받은 데이터의 고밀도 콜레스테롤(HDL)이 낮은 값에 분포해 있는데, 이 수치가 낮을 수록 저밀도 콜레스테롤 (LDL)을 잘 배출하지 못하게 된다. 이로 인해, 산화된 LDL이 혈전이 발생하여 혈압이 증가하고 모세혈관 괴사가 발생 할 수 있다.
+종속변수인 labels별(당뇨병 진단을 받은 경우 1, 아닌 경우 0) 각 피처의 분포도 확인 결과, 많은 변수들이 당뇨병 진단 여부와 상관없이 비슷한 분포를 띄고 있는 것처럼 보인다. 그 중에서 눈에 띄는 것은 혈당과 관련 된 피처들인 HbA1c, FBG, HDL 등인데, 혈당 관련 수치는 당뇨병 진단을 받은 집단이 좀 더 높은 값에 분포해 있는 것으로 보인다.
+
+실제로 각 라벨별 피처의 평균값을 계산해 보면, 대부분의 피처에서 당뇨병 진단을 받은 데이터인 labels 1의 평균 수치가 더 높게 나타지만, HDL의 경우 labels 0이 55.5로 labels 1의 49.8에 비해 더 높은 평균 수치를 가지고 있다. 당뇨병 진단을 받은 데이터의 고밀도 콜레스테롤(HDL)이 낮은 값에 분포해 있는데, 이 수치가 낮을 수록 저밀도 콜레스테롤 (LDL)을 잘 배출하지 못하게 된다. 이로 인해, 산화된 LDL이 혈전이 발생하여 혈압이 증가하고 모세혈관 괴사가 발생 할 수 있다.
 
 ### 각 피처별 분포도
 
@@ -47,7 +49,7 @@
 - Wt-Ht
 - BMI-Ht
 - DBP-SBP
-- LDL-TC (매우 강한 0.9<=r)
+- LDL-TC (매우 강한 상관관계, 0.9<=r)
 - ALT-AST
 
 비교적 강한 음의 상관관계(0.5<=r<0.7)를 보이는 변수들은 아래와 같다.
@@ -135,7 +137,9 @@ VIF 값이 가장 큰 변수들 중 Ht, Wt를 먼저 제외하고, 이후 DBP, T
 
 ![image](https://user-images.githubusercontent.com/38115693/147495420-d4b0e495-a424-4c63-afba-1a8057e99f16.png)
 
-각 검사항목별로 정상 또는 판단 기준 범위에 따라 나누고 그룹화한/범주화한 파생 변수를 생성하였다. 추가적으로, 맥압, BUN/Cr 비율, AST/ALT 비율 등 당뇨병 진단과 밀접하게 관련된 다른 검사에 대해서도 조사하여 산식을 적용하여 범주화 된 변수를 생성하였고, DLP(이상지질혈증), MS(대사증후군) 등 당뇨로 발생 할 수 있는 질병과 합병증에 대한 정보도 확인하여 관련 산식을 적용하여 생성하였다.
+각 검사항목별로 정상 또는 판단 기준 범위에 따라 나누고 그룹화한/범주화한 파생 변수를 생성하였다.
+
+추가적으로, 맥압, BUN/Cr 비율, AST/ALT 비율 등 당뇨병 진단과 밀접하게 관련된 다른 검사에 대해서도 조사하여 산식을 적용하여 범주화 된 변수를 생성하였고, DLP(이상지질혈증), MS(대사증후군) 등 당뇨로 발생 할 수 있는 질병과 합병증에 대한 정보도 확인하여 관련 산식을 적용하여 생성하였다.
 
 ---
 ## 모델링
@@ -146,7 +150,7 @@ VIF 값이 가장 큰 변수들 중 Ht, Wt를 먼저 제외하고, 이후 DBP, T
 
 모델링은 크게 세 가지 과정을 거친다.
 1. 데이터 전처리
-2. Imbalanced 데이터 처리를 위한 오버 샘플링
+2. Imbalanced 데이터 처리를 위한 오버샘플링
 3. 파라미터 튜닝
 
 ### 사용한 데이터 처리 기법 및 학습/예측 모델
@@ -179,11 +183,11 @@ VIF 값이 가장 큰 변수들 중 Ht, Wt를 먼저 제외하고, 이후 DBP, T
 
 오버샘플링은 5가지 기법을 사용하였으며, 적용 대상 데이터셋의 특성(범주형, 연속형, 범주형+연속형)에 맞춰 적절한 기법을 사용했다.
 
-1. Random Oversampling(ROS): 기존에 존재하는 소수의 클래스(Minority)를 복제하여 비율을 맞춰주는 기법다. 숫자가 늘어나기 때문에 더 많은 가중치를 받게 되는 원리이다.
-2. SMOTE: 임의의 소수 클래스 데이터로부터 인근 소수 클래스(minor class) 사이에 새로운 데이터를 생성하는 기법이다. 임의의 소수 클래스에 해당하는 관측치 X를잡고, 그 X로부터 가장 가까운 K개의 이웃을 찾아 그 사이에 임의의 새로운 X를 생성하는 데이터로부터 인근 소수 클래스 사이에 새로운 데이터를 생성한다. 
-3. ADASYN: Borderline-SMOTE에서 조금 더 변주를 준 알고리즘으로, 인접한 다수 클래스의 비율에 따라 가중치를 줘 SMOTE를 적용시키는 방식이다.
-4. SMOTE-NC: SMOTE가 수치형/연속형 데이터로만 이루어진 데이터에 적합한 반면, SMOTE-NC는 범주형과 수치형이 믹스된 데이터에 적용할 수 있는 기법이다.
-5. SMOTE-N: SMOTE-N은 범주형으로만 이루어진 데이터에 적합한 SMOTE 기법이다.
+1. `Random Oversampling(ROS)`: 기존에 존재하는 소수의 클래스(Minority)를 복제하여 비율을 맞춰주는 기법다. 숫자가 늘어나기 때문에 더 많은 가중치를 받게 되는 원리이다.
+2. `SMOTE`: 임의의 소수 클래스 데이터로부터 인근 소수 클래스(minor class) 사이에 새로운 데이터를 생성하는 기법이다. 임의의 소수 클래스에 해당하는 관측치 X를잡고, 그 X로부터 가장 가까운 K개의 이웃을 찾아 그 사이에 임의의 새로운 X를 생성하는 데이터로부터 인근 소수 클래스 사이에 새로운 데이터를 생성한다. 
+3. `ADASYN`: Borderline-SMOTE에서 조금 더 변주를 준 알고리즘으로, 인접한 다수 클래스의 비율에 따라 가중치를 줘 SMOTE를 적용시키는 방식이다.
+4. `SMOTE-NC`: SMOTE가 수치형/연속형 데이터로만 이루어진 데이터에 적합한 반면, SMOTE-NC는 범주형과 수치형이 믹스된 데이터에 적용할 수 있는 기법이다.
+5. `SMOTE-N`: SMOTE-N은 범주형으로만 이루어진 데이터에 적합한 SMOTE 기법이다.
 
 #### 3. 하이퍼파라미터 튜닝
 
@@ -216,23 +220,23 @@ VIF 값이 가장 큰 변수들 중 Ht, Wt를 먼저 제외하고, 이후 DBP, T
 
 <p align="center"><img src="https://user-images.githubusercontent.com/38115693/147502365-93d6dfdc-13af-4d72-bcc2-f4812c19e3ea.png" width="40%" height=""></p>
 
-테스트 결과는 평균적으로 위와 같으며, 이 중
-- Random Forest는 accuracy가 82%, recall이 75%,
-- Logistic Regression은 accuracy가 79%, recall 74%,
-- SVM은 accuracy 77%, recall 74%의 예측 성능을 보여주었다.
+One-Hot Encoding과 ROS를 적용한 테스트 결과는 평균적으로 이와 같은 예측 성능을 얻었다.
+- Random Forest: accuracy 82%, recall 75%
+- Logistic Regression: accuracy 79%, recall 74%
+- SVM: accuracy 77%, recall 74%
 
 ### 기존 연속형 데이터 기준 모델링
 1. 기존 연속형 데이터 기준으로 Standard Scaling을 적용하여 모델링을 시도하였다. 우선 (1) gender, age 피처에 대해 One-Hot Encoding을 적용하고, 'Data Leakage'를 피하기 위해 train-test split을 먼저 한 후 (2) 기존 연속형 변수들에 대해 Standard Scaling을 적용하였다. 마지막으로, (3) oversampling(SMOTENC, RandomOversampling) 기법을 적용하고 모델 학습과 테스트를 진행하였다.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/38115693/147503805-fc4534c4-4bc3-454a-b1fb-79cc92202e5b.png" width="75%" height=""></p>
 
-SMOTE-NC를 적용했을 때에, 평균적으로 위와 같은 성능을 얻었으며, 그 중
-- Logistic Regression은 accuracy 83%, recall 79%를 얻었고,
-- SVM은 각각 81%, 79%의 예측 성능을 보여주었다.
+SMOTE-NC를 적용했을 때에, 평균적으로 이와 같은 예측 성능을 얻었다.
+- Logistic Regression: accuracy 83%, recall 79%
+- SVM: accuracy 81%, recall 79%
 
-Random Oversampling을 적용했을 때엔, 평균적으로 위와 같은 성능을 얻었으며, 그 중
-- Logistic Regression이 accuracy 83%, recall 80%를 얻었고,
-- SVM은 각각 82%, 81%의 성능을 보여주었다.
+Random Oversampling을 적용했을 때엔, 평균적으로 이와 같은 예측 성능을 얻었다.
+- Logistic Regression: accuracy 83%, recall 80%
+- SVM: accuracy 82%, recall 81%
 
 Standard Scaling을 적용한 두 모델 모두 성능은 비슷하게 나타났으며, 두 결과 모두 구간으로 나누어 범주화한 데이터셋을 사용하여 모델링한 결과보다 성능이 더 좋게 나타났다.
 
@@ -247,13 +251,13 @@ Standard Scaling을 적용한 두 모델 모두 성능은 비슷하게 나타났
 
 <p align="center"><img src="https://user-images.githubusercontent.com/38115693/147504188-68227819-e075-4056-989c-174eb6976814.png" width="75%" height=""></p>
 
-SMOTE-NC를 적용했을 때에, 평균적으로
-- Logistic Regression은 accuracy가 84%, recall이 77%를 얻었으며,
-- SVM은 각각 82%, 77%의 예측 성능을 보여주었다.
+SMOTE-NC를 적용했을 때에, 평균적으로 이와 같은 예측 성능을 얻었다.
+- Logistic Regression: accuracy 84%, recall 77%
+- SVM: accuracy 82%, recall 77%
 
-Random Oversampling을 적용했을 때엔, 평균적으로
-- Logistic Regression이 accuracy가 83%, recall이 80%를 얻었으며,
-- SVM은 각각 82%, 82%의 성능을 보여주었다.
+Random Oversampling을 적용했을 때엔, 평균적으로 이와 같은 예측 성능을 얻었다.
+- Logistic Regression: accuracy 83%, recall 80%
+- SVM: accuracy 82%, recall 82%
 
 Wt, Ht 피처들을 제외한 두 모델도 구간으로 나누어 범주화한 데이터셋을 사용하여 모델링한 결과보다는 예측 성능이 더 좋은 것으로 보여진다. Wt, Ht를 포함하여 모델링 했을 때의 결과와 비교하면, accuracy 결과는 비슷하지만, recall은 Wt, Ht 피처들을 포함했을 때의 결과가 더 좋기 때문에, Wt, Ht 피처들을 포함하는 경우 더 좋은 모델로 판단된다.
 
@@ -261,15 +265,15 @@ Wt, Ht 피처들을 제외한 두 모델도 구간으로 나누어 범주화한 
 
 <p align="center"><img src="https://user-images.githubusercontent.com/38115693/147504845-ca463740-bcfd-4eb4-9f09-9d6a08092a8b.png" width="75%" height=""></p>
 
-Age 피처를 스케일링에 포함한 모델에 SMOTE-NC를 적용했을 때에, 평균적으로 위와 같은 결과를 얻었는데, 이 중
-- Logistic Regression은 accuracy 85%, recall 82%를 얻었으며,
-- SVM은 각각 84%, 82%의 예측 성능을 보여주었다.
+Age 피처를 스케일링에 포함한 모델에 SMOTE-NC를 적용했을 때에, 평균적으로 이와 같은 예측 성능을 얻었다.
+- Logistic Regression: accuracy 85%, recall 82%
+- SVM: accuracy 84%, recall 82%
 
-Random Oversampling을 적용했을 때엔, 평균적으로 위와 같은 결과를 얻었는데, 이 중
-- Logistic Regression이 accuracy 84%, recall 83%를 얻었으며,
-- SVM은 각각 83%, 82%의 성능을 보여주었다.
+Random Oversampling을 적용했을 때엔, 평균적으로 이와 같은 예측 성능을 얻었다.
+- Logistic Regression: accuracy 84%, recall 83%
+- SVM: accuracy 83%, recall 82%
 
-이는 앞서, 스케일링한 기존 연속병 변수들에 범주화한 age 피처를 인코딩 과정에 포함하고 Wt, Ht 피처들을 포함하여 모델링 했을 때의 결과보다도 더 좋은 예측 성능을 보여준다.
+이는 앞서, 스케일링을 적용한 기존 연속형 변수들에 age 피처를 범주화 및 인코딩 과정에 포함시키고, Wt, Ht 피처들을 포함하여 모델링을 했을 때의 결과보다도 더 좋은 예측 성능을 보여준다.
 
 ### 변수 중요도 확인
 
