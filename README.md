@@ -53,7 +53,7 @@
 
 ### 피처별 상관관계
 
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147489463-6a5c8922-0b9a-4693-b00a-bde84458eebd.png" width="70%" height=""></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147489463-6a5c8922-0b9a-4693-b00a-bde84458eebd.png" width="75%" height=""></p>
 
 아래의 변수들간 강한 양의 상관관계(0.7<=r)를 보인다.
 - Wt-Ht
