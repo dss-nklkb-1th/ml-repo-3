@@ -1,7 +1,4 @@
-![image](https://user-images.githubusercontent.com/38115693/147531854-d22d0182-5efd-46a2-8deb-bf30565efa11.png)
----
-
-#### 프로젝트 팀: 김대영, 박성호
+![image](https://user-images.githubusercontent.com/38115693/147531950-53db2283-13f0-4704-b97c-0daf513bf8f7.png)
 
 ---
 ## 프로젝트 배경
