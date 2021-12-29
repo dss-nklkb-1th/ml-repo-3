@@ -12,7 +12,8 @@
 
 ---
 ## 프로젝트 배경<a class="anchor" id = "c1"> </a>
---> 너무 길다; 읽기 어렵다
+
+<span style="color:red">--> 너무 길다; 읽기 어렵다</span>
 
 11월의 두 번째 일요일은 국제당뇨병연맹(IDF)와 세계보건기구(WHO)가 정한 세계당뇨의날(World Diabetes Day)이다. 폐렴, 고혈압, 뇌졸증 등 유병률, 심각도 등에서 중요도가 큰 질환들은 모두 자기만의 기념일을 가지고 있다. 그만큼 당뇨병은 점점 유병률이 증가하고 우리 일상을 위협하는 심각한 질환이라는 의미이다.
 
@@ -344,7 +345,7 @@ Permutation Importance로 당뇨병 진단 예측에 있어 변수 중요도 확
 ---
 
 ## 참고 자료
---> APA 또는 특정 스타일로 일관성 있게 맞추기
+<span style="color:red">--> APA 또는 특정 스타일로 일관성 있게 맞추기</span>
 
 - https://www.amc.seoul.kr/asan/healthinfo/disease/diseaseDetail.do?contentId=31596
 - https://www.kosso.or.kr/newsletter/202104/sub02.html
