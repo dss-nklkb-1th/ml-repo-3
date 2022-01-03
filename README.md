@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/38115693/147531950-53db2283-13f0-4704-b97c-0daf513bf8f7.png)
+![logo](https://user-images.githubusercontent.com/91659448/147901292-1231d824-e558-427b-a9d7-5b997af82824.png)
 
 ---
 ## Introduction
@@ -72,8 +72,8 @@
 
 ### EDA
 :bar_chart: **Feature별 분포도**
-![output](https://user-images.githubusercontent.com/91659448/147900436-60db796c-4892-443a-aa2e-cc7ff305b0d3.png)
-)
+![image](https://user-images.githubusercontent.com/91659448/147901339-0f8d29a5-0266-4343-9122-16945ca1520a.png)
+
 - 각 Features들의 이상치가 존재하나 의학적으로 의미가 있는 수치들이였습니다.
 
 :bar_chart: **당뇨병 유무별 피쳐 분포도**
@@ -89,30 +89,35 @@
 
 :bar_chart: **Feature별 상관계수 히트맵**
 
-![image](https://user-images.githubusercontent.com/91659448/147900114-fc0470dd-115e-480b-a9b4-1e200f554335.png)
+![image](https://user-images.githubusercontent.com/91659448/147901309-4bc75ac6-ef74-4db3-acb6-dcb083ca64d9.png)
 
 - `나이`와의 상관은 `-0.06`으로 상관 관계가 거의 없어 보입니다.
 - `혈압`과 `BMI`도 크게 상관이 없어 보입니다.
 - 하지만, `혈당`과 관련 된 수치는 직접적인 당뇨 판단 요인인 만큼 약한 상관관계를 보입니다.
 - 해당 변수들에 대한 분포도를 확인해보고 어떤 경향성이 있는지를 파악해 보겠습니다.
 
+📊 **HDL별 당뇨 분포도**
+
+![image](https://user-images.githubusercontent.com/91659448/147901512-54fa297b-15c1-434b-8a0e-42b67a5ba123.png)
+
+- `HDL`이 낮은 그룹이 높은 그룹보다 당뇨의 비율이 높은 편입니다.
 :bar_chart: **BMI별 당뇨 분포도**
 
-![image](https://user-images.githubusercontent.com/91659448/147900267-e2fa0f2f-1dd7-429a-8b78-6094f16fff44.png)
+![image](https://user-images.githubusercontent.com/91659448/147901387-cd795b80-ea92-453c-8cb2-917cf13ac8fa.png)
 
 - `BMI` 지수가 증가할수록 당뇨 환자의 비율이 높은 편입니다.
 
 :bar_chart:  **혈압별 당뇨 분포도**
 
-<img src='https://user-images.githubusercontent.com/91659448/147900697-3cab4cda-aaba-4d00-b541-13023846b341.png' width=800>
+![image](https://user-images.githubusercontent.com/91659448/147901421-34a4524c-1b87-4bd1-8e29-9237723d7785.png)
 
-- 당뇨 그룹의 집단이 혈압이 높은 환자들의 비중이 더 많았습니다.
+- 당뇨 그룹의 집단이 `혈압`이 높은 환자들의 비중이 더 많았습니다.
 
 :bar_chart: **혈당별 당뇨 분포도**
 
-![image](https://user-images.githubusercontent.com/91659448/147900633-82370d40-1aa3-4063-99bd-cbf396d1e2f0.png)
+![image](https://user-images.githubusercontent.com/91659448/147901446-10893166-fdc1-48cf-b0e2-c1233fc68234.png)
 
-- 혈당이 높은 그룹이 낮은 그룹보다 당뇨의 비율이 높은 편입니다.
+- `혈당`이 높은 그룹이 낮은 그룹보다 당뇨의 비율이 높은 편입니다.
 
 ---
 ## 3. 모델링<a class="anchor" id = "c4"> </a>
