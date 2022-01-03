@@ -1,165 +1,121 @@
-![logo](https://user-images.githubusercontent.com/91659448/147628536-e00a68e4-b755-45e1-bb7e-4622308d6a25.png)
+![image](https://user-images.githubusercontent.com/38115693/147531950-53db2283-13f0-4704-b97c-0daf513bf8f7.png)
+
+---
+## Introduction
+- 실제 진료 데이터를 기반으로 당뇨병 예측 서비스 개발
 
 ---
 
-## 목차
-* [1. 프로젝트 배경](#c1)
-* [2. 데이터 소개](#c2)
-* [3. EDA 및 전처리](#c3)
-* [4. 모델링](#c4)
-* [5. 모델링 결과](#c5)
-* [6. 한계 및 과제](#c6)
+## Contents
+- [1. 프로젝트 소개](#1-프로젝트-소개)
+  * [배경](#배경)
+  * [프로젝트 개요](#프로젝트-개요)
+- [2. EDA 및 데이터 전처리](#2-데이터-전처리)
+  * [결측치 처리](#결측치-처리)
+  * [데이터 범주화](#데이터-범주화)
+  * [파생변수 생성](#파생변수-생성)
+  * [EDA](#EDA)
+- [3. 모델링](#3-모델링)
+  * [모델링 과정](#모델링-과정)
+  * [모델 성능 평가](#모델-성능-평가)
+  * [최종 모델](#최종-모델-final-model)
+- [4. 프로젝트 한계 및 과제](#4-프로젝트-한계-및-과제)
+  * [한계점](#한계점)
+  * [향후 과제](#향후-과제)
+- [5. 참고 문헌](#5-참고-문헌)
 
 ---
-## 프로젝트 배경<a class="anchor" id = "c1"> </a>
 
-> 수정 필요
->> 너무 길다; 읽기 어렵다
+## 1. 프로젝트 소개
+### 배경
+- 세계보건 기구에서 세계 당뇨의 날을 지정 할 만큼 당뇨의 유병률과 심각도가 증가하고 있습니다.
+- 코로나19 이후 실내 활동 증가로 인한 일상 생활 활동량 감소와 운동 빈도가 줄고 운동량의 감소로 체중이 증가하여 당뇨에 대한 위험성이 증가하고 있습니다. 
+- 당뇨는 그 자체보다 심근경색, 뇌졸증, 망막질환, 신장질환 등과 같은 합병증을 일으킬 수 있는 질환입니다.
+- 사전에 당뇨병을 예측해 자가관리 및 질병 치료에 도움을 주고자 프로젝트 시행 하게 되었습니다.
 
-11월의 두 번째 일요일은 국제당뇨병연맹(IDF)와 세계보건기구(WHO)가 정한 세계당뇨의날(World Diabetes Day)이다. 폐렴, 고혈압, 뇌졸증 등 유병률, 심각도 등에서 중요도가 큰 질환들은 모두 자기만의 기념일을 가지고 있다. 그만큼 당뇨병은 점점 유병률이 증가하고 우리 일상을 위협하는 심각한 질환이라는 의미이다.
-
-'당뇨'란 혈액 속의 포도당 수치가 정상인보다 높은 상태를 말하며, 우리 몸이 섭취한 음식물을 에너지로 적절하게 사용되지 못 하고 포도당이 소변으로 배출된다고 하여 이름 붙여진 병이다. 정상인의 경우 소변으로 당이 넘쳐나지 않을 정도로 혈당이 조절된다. 여기에는 췌장에서 분비되는 '인슐린'이라는 호르몬이 중요한 작용을 한다. 이러한 인슐린이 모자라거나 제대로 일을 못 하는 상태가 되면 혈당이 상승하며, 이로 인해 혈당이 지속적으로 높은 상태가 된다. 이러한 상태를 당뇨병이라고 하는데, 이렇게 혈당이 높은 상태로 오랜 시간이 지나면 심근경색, 뇌졸중, 망막질환, 신장질환, 동맥경화와 같은 만성 합병증을 일으킬 수 있는 무서운 질환이다.
-
-코로나19(코로나 바이러스) 이후 실내 활동이 증가하고, 일상 생활 활동량 감소, 운동 빈도와 운동량의 감소, 식이 변화 등 일상 생활에서의 많은 변화가 있었다. 장기화 된 코로나 상황 속에서, 대한비만학회의 '코로나19시대 국민 체중 관리 현황 및 인식 조사'에 따르면 10명 중 약 5명은 코로나 이후 뭄무게가 3kg 이상 증가한 것으로 나타났다. 또한, 많은 사람들이 재택 근무, 온라인 수업 등으로 불규칙적인 생활과 식습관으로 영양 불균형의 상태 등도 겪고 있다. 하지만 더 큰 문제는, 바로 이러한 모든 요인들이 당뇨 유병률을 증가시키는 요인이 된다는 것이다.
-
-전 세계의 위협이 되고 있는 코로나19로 인해 당뇨병 환자들의 우려는 더욱 커졌다. 당뇨병 환자는 코로나19에 특히 더 취약하다. 당뇨병은 우리 몸의 면역체계를 무너뜨려 감염병에 취약하게 만들며, 특히 당뇨병 환자는 일반인에 비해 코로나19의 감염 위험이 1.2배 더 높아 더 쉽게 감염 될 수 있다고 한다. 또한, 당뇨병은 만성질환 중에서도 가장 코로나19의 예방에 주의를 기울여야 하는 것으로 나타났는데, '코로나19에 어떤 사람들이 더 위험한가?'라는 질문에 미 질병통제예방센터(CDC)는 “지금까지의 연구 결과에 의하면 65세 이상의 노인, 장기요양시설 생활자, 만성 폐질환, 천식, 비만, 당뇨병 등 기저질환을 가진 사람들에게 더 위험할 수 있다”고 답했다. 실제로 일반인에 비해 당뇨병 환자가 코로나19에 감염됐을 경우 예후가 나쁜 것으로 알려져 있다. 대한당뇨병학회에 따르면 국내 코로나19 환자의 14.5~21.8%가 당뇨병 환자였고, 국내 5천여명의 코로나19 환자를 대상으로 한 연구에 따르면 당뇨병 환자가 코로나19 감염 시 기계호흡이 필요한 경우는 1.93배, 사망률은 2.66배 높았다. 또한, 인슐린 치료를 받는 당뇨병 환자들은 감염 위험이 25% 증가했다. 미국의 경우 코로나19 감염증 사망자 중 40%가 당뇨병 환자였다는 한 연구 결과도 나왔다.
-
-그렇기에 코로나19 시대의 당뇨병 자가관리는 더욱 중요해졌다. 특히 당뇨병에 취약한 한국인의 특성을 고려할 때, 만약 자기의 건강상태와 당뇨병 위험을 사전에 예측 할 수 있다면, 당뇨병으로 진행되는 것을 적절한 사전 대응과 신체 및 혈당 관리를 통해 예방 할 수 있을 것이다. 이는 나아가 코로나19 감염을 예방하고 발생률 감소에도 영향을 줄 수 있을 것이며, 코로나19로 인한 중증도와 사망률 또한 감소시킬 수 있을 것이다. 그것을 목적으로, 이 프로젝트를 통해 머신러닝과 실제 진료 데이터를 활용하여 당뇨병 진단에 대한 사전 예측 모형을 개발하게 되었다.
+### 프로젝트 개요
+1. 프로젝트명: **머신러닝 기반 제2형 당뇨병 진단 사전 예측 모형**
+2. 수행자: 김대영, 박성호
+3. 수행기간: 2주 (2021.12.07 \~ 2021.12.21)
+4. 목표: 데이터 수치들을 바탕으로 당뇨병 예측
+5. 데이터셋: 당뇨병 데이터
+    - 총 2438개의 행과 26개의 컬럼으로 구성 돼 있습니다.
+        - 환자에 대한 기본 정보(나이, 성별, 키, 몸무게, 체질량지수)
+        - 혈압 정보
+        - 콜레스테롤 수치
+        - 간 수치
+        - 신장 수치
+    - 총 2438개의 행 중 당뇨병을 진단받은 데이터는 206개로 구성 돼 있습니다.
+        - **불균형 데이터**
 
 ---
-## 데이터 소개<a class="anchor" id = "c2"> </a>
-당뇨병 사전 진단 예측 모델링을 위해 당뇨병 관련 실제 진료 데이터/실사용데이터(Real World Data, RWD)를 확보하여 사용하였다. 데이터셋은 성별, 나이 등 환자에 대한 기본 정보와 당뇨병 진단 여부, 그리고 혈압, 혈당, 콜레스테롤, 간, 신장 등과 관련된 여러 검사 수치에 대한 데이터로 이루어져 있다.
-
-총 2,438개의 행과 26개의 컬럼/피처로 구성되어 있는데, 이 중 당뇨병 진단을 받은 데이터가 206개인 **불균형 데이터**이다.
-
----
-## EDA 및 전처리<a class="anchor" id = "c3"> </a>
-
-> 수정 필요
->> 차트 전체를 다 보여주기 보다, 중요한 전달하고 싶은, 전달이 필요한 것에 포커스해서 보여주기
->> 차트 전체를 던져주면, 보는 사람 입장에서 이게 뭔가, 뭘 보여주려는 건가 바로 이해가 어려울 것이다
-
-### 각 피처별 분포도
-
-![image](https://user-images.githubusercontent.com/38115693/147487886-2d334533-b961-4329-b518-6b92a723abad.png)
-
-각 피처별 분포도 조회 결과, age, Wt, BMI, SBP, PR 등 일부 피처들을 제외한 대부분의 피처가 정규성을 띄고 있는 것으로 보인다. 하지만 Cr, AST, ALT, GGT, ALP 등이 왼쪽으로 치우친 분포를 보인다.
-
-### 라벨별 각 피처 분포도
-![image](https://user-images.githubusercontent.com/38115693/147484996-1f8a17f3-2d3a-4ee3-af73-69b5245a755d.png)
-
-종속변수인 labels별(당뇨병 진단을 받은 경우 1, 아닌 경우 0) 각 피처의 분포도 확인 결과, 많은 변수들이 당뇨병 진단 여부와 상관없이 비슷한 분포를 띄고 있는 것처럼 보인다. 그 중에서 눈에 띄는 것은 혈당과 관련 된 피처들인 HbA1c, FBG, HDL 등인데, 혈당 관련 수치는 당뇨병 진단을 받은 집단이 좀 더 높은 값에 분포해 있는 것으로 보인다.
-
-실제로 각 라벨별 피처의 평균값을 계산해 보면, 대부분의 피처에서 당뇨병 진단을 받은 데이터인 labels 1의 평균 수치가 더 높게 나타지만, HDL의 경우 labels 0이 55.5로 labels 1의 49.8에 비해 더 높은 평균 수치를 가지고 있다. 당뇨병 진단을 받은 데이터의 고밀도 콜레스테롤(HDL)이 낮은 값에 분포해 있는데, 이 수치가 낮을 수록 저밀도 콜레스테롤 (LDL)을 잘 배출하지 못하게 된다. 이로 인해, 산화된 LDL이 혈전이 발생하여 혈압이 증가하고 모세혈관 괴사가 발생 할 수 있다.
-
-### 각 피처별 분포도
-
-![image](https://user-images.githubusercontent.com/38115693/147485404-fa76fccc-bf2c-4350-9514-a6b4a38dfbd5.png)
-
-각 피처별 분포도를 보면 대부분의 피처들에 이상치로 보이는 값들이 존재한다. 하지만 조사 결과, 이러한 수치들 또한 의미가 있는 것으로 판단되어 제거하지 않고 그대로 사용하는 것으로 결정하였다. 예를 들어, TG가 1000mg/dL이 넘는 경우는 심한 고중성지방혈증으로 췌장염 발생의 위험이 증가하는데, 고중성지방혈증 환자 다수가 당뇨와 고혈압 등 대사성질환을 함께 가진 경우가 많다.
-
-### 피처별 상관관계
-
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147489463-6a5c8922-0b9a-4693-b00a-bde84458eebd.png" width="75%" height=""></p>
-
-아래의 변수들간 강한 양의 상관관계(0.7<=r)를 보인다.
-- Wt-Ht
-- BMI-Ht
-- DBP-SBP
-- LDL-TC (매우 강한 상관관계, 0.9<=r)
-- ALT-AST
-
-비교적 강한 음의 상관관계(0.5<=r<0.7)를 보이는 변수들은 아래와 같다.
-- CrCl-Cr
-
-### 다중회귀분석
-
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147489857-6b0dd59b-7ac9-4e9e-ac5a-1604185787c8.png" width="30%" height=""></p>
-
-Labels에 대하여 연속형 독립변수들로 회귀분석을 실시한 결과:
-- 결정계수(R-sqaured)는 전체 데이터 중 해당 회귀모델이 설명 할 수 있는 데이터의 비율, 회귀식의 설명력을 나타내는데(1에 가까울수록 높은 설명력), 여기선 0.218로 모형적합도는 낮은 편이다.
-- F-statistic은 32.02, p-value(Prob(F-statistics))는 1.46e-112로 0.05 이하이니 통계적으로 유의하며, 변수끼리 관련있다고 판단된다.
-- 회귀계수(coef)는 HbA1c가 0.159로 가장 높다. HbA1c의 1 증가가 labels에 가장 큰 영향을 준다고 볼 수 있겠다.
-- t-test결과, 독립변수와 종속변수 사이의 상관관계를 의미하는 t 값(값이 클수록 상관도가 큼)이 상대적으로 큰 변수들로는 age, HbA1c, FBG, TC, GGT, ALP이다.
-- 독립변수들간의 유의확률(P>|t|; p-value)을 보면, 이 age, HbA1c, FBG, TC, GGT, ALP 변수들이 통계적으로 유의한 것으로 나타났다(0.05보다 작아야 유의미).
-
-### VIF(Variance Inflation Factor)
-
-VIF란 독립변수를 다른 독립변수로 선형회귀한 성능을 나타내며, 다른 독립변수에 의존하는 가장 의존적인 변수를 찾을 수 있다 (다른 변수에 의존적일 수록 VIF가 커진다).
-
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147490333-786c338e-588e-414b-9a85-7d830ac5ccf2.png" width="13%" height=""></p>
-
-Ht, Wt, BMI, SBP, DBP, HbA1c, FBG, TC, LDL, Alb 등이 높은 VIF 값을 보인다. 다른 독립변수들에 의존적인 변수들임을 의미한다.
-
-VIF 값이 가장 큰 변수들 중 Ht, Wt를 먼저 제외하고, 이후 DBP, TC, Alb 변수들도 순차적으로 제외 한 후 VIF를 다시 계산해 보았다. 조회한 VIF 값은 이후 예측 모델링시 전처리 과정에서 참고 하였다.
-
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147490591-12a05a97-8f76-419f-b301-caba2b59e69e.png" width="10%" height="400"> <img src="https://user-images.githubusercontent.com/38115693/147490637-b1af2608-1320-4115-88bb-d105a97c35a9.png" width="10%" height="400"></p>
-
-### 당뇨병 진단 데이터 특성 조회
-
-이어서, 당뇨병 진단을 받은 데이터(labels=1)에 대한 특성들을 살펴보았으며, 종속변수와의 상관관계가 높아보이는 독립변수들 위주로 조회하였다.
-
-**당뇨병 진단을 받은 사람들의 성별 조회**
-
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147491151-79f0adea-648e-4b2c-86f8-fee3919649b1.png" width="40%" height=""></p>
-
-- 여성보다 남성이 더 많다.
-
-**당뇨병 진단을 받은 사람들의 연령 조회**
-
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147491301-bd7bfad2-f3cc-466f-afb7-cb2b8199839b.png" width="40%" height=""></p>
-
-- 연령대로 구분하여 범주화한 후 표현하였다. 연령대가 높은 순서대로 많은 빈도수를 보인다.
-
-**당뇨병 진단을 받은 사람들의 체질량지수(BMI) 조회**
-
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147491478-b46878e6-6bb3-4daf-a78d-3b2653b8f9de.png" width="40%" height=""></p>
-
-- 상위 15개 수치를 조회한 것인데, 23 이상의 수치에 대한 빈도수가 높다. 23이상이면 비만 전단계이고, 25이상부터 비만으로 부른다. 
-
-**당뇨병 진단을 받은 사람들의 당화혈색소(HbA1c) 조회**
-
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147493085-0e9a450d-dabf-4691-a8c5-9fede6ff6730.png" width="40%" height=""></p>
-
-- 상위 15개 수치 값 조회 결과, HbA1c의 5.7 이상의 빈도수가 많은 것으로 나타난다. 5.7-6.4%는 당뇨 전단계로 부르며, 6.5% 이상은 당뇨로 진단한다.
-
-**당뇨병 진단을 받은 사람들의 공복혈당(FBG) 조회**
-
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147493131-86f270cb-f369-4e4f-b4c8-590a29fa5e8e.png" width="40%" height=""></p>
-
-- 상위 15개 수치 값 조회 결과, 100 이상의 수치 값들에 대한 빈도수가 많다. 100-125는 공복혈당장애(당뇨병 전단계)이며, 126 이상은 당뇨병으로 진단한다.
-
-**당뇨병 진단을 받은 사람들의 총 콜레스테롤(TC) 조회**
-
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147493176-e520f3d7-9a49-474b-99bc-a838d1c101fa.png" width="40%" height=""></p>
-
-**당뇨병 진단을 받은 사람들의 감마글루타밀전이효소(GGT) 조회**
-
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147493255-adcfa5d1-8a7d-4345-b267-4d3fd839d64c.png" width="40%" height=""></p>
-
-**당뇨병 진단을 받은 사람들의 알칼라인산분해효소(ALP) 조회**
-
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147493284-2dac9629-2ca4-4dba-9964-f6db2e9d1db8.png" width="40%" height=""></p>
+## 2. 탐색적 데이터 분석
 
 ### 결측치 처리
+<p align='center'><img src="https://user-images.githubusercontent.com/38115693/147493976-370db9bb-482e-4367-a416-b4b531f6383e.png" width="60%"></p>
 
-<p align="center"><img src="https://user-images.githubusercontent.com/38115693/147493976-370db9bb-482e-4367-a416-b4b531f6383e.png" width="40%" height=""></p>
+- `PR`, `TG`, `LDL`, `HDL`, `Alb`, `ALP` 피처에서 결측치가 존재 했습니다.
+    - `PR`의 경우 나이대 별 중위값으로 값을 대체 하였습니다.
+    - `TG`의 경우 `TC = LDL + HDL + TG/5`의 산식을 이용해 대체 했습니다.
+    - 254번 인덱스의 경우 `TG`, `LDL`, `HDL`, `Alb`, `AlP` 모두 존재하지 않아 데이터를 삭제 하였습니다.
 
-결측치 조회 결과 PR, TG, LDL, HDL, Alb, ALP 피처에서 결측치가 확인 되었으며, 아래와 같이 처리하였다.
-- PR의 경우 age 피처를 연령대별로 나누어 범주화한 피처를 사용하여, 동일한 연령대 PR의 평균값으로 대체하였다. 
-- TG의 경우 총 콜레스테롤(TC) 산식(TC = LDL + HDL + TG/5)을 이용해 역산을 통해 TG를 계산하여 채웠다.
-- Index 254번 데이터는 TG, LDL, HDL, Alb, AlP 모두 Null값이어서 해당 row 전체를 삭제하였다.
+### 데이터 범주화
+- [컬럼 정의 및 분류 기준](https://docs.google.com/document/d/1r3cG6r4KdIx6VLw8R8tiUZr7N-1v2GtEt5wEvDYpa18/edit#heading=h.z2foisebalcq)을 바탕으로 정상 또는 판단 기준 범위에 따라 나눴습니다.
 
-### 각 검사 수치에 대한 범주형 컬럼 추가 생성
+### 파생변수 생성
+- 당뇨병 유관 질병
+    - `DLP(이상지질혈증)`, `MS(대사증후군)`
+- 당뇨병 진단과 관련 된 검사
+    - `맥압`
+    - `BUN/Cr` 비율
+    - `AST/ALT` 비율
 
-![image](https://user-images.githubusercontent.com/38115693/147495420-d4b0e495-a424-4c63-afba-1a8057e99f16.png)
+### EDA
+:bar_chart: **Feature별 분포도**
+![output](https://user-images.githubusercontent.com/91659448/147900436-60db796c-4892-443a-aa2e-cc7ff305b0d3.png)
+)
+- 각 Features들의 이상치가 존재하나 의학적으로 의미가 있는 수치들이였습니다.
 
-각 검사항목별로 정상 또는 판단 기준 범위에 따라 나누고 그룹화한/범주화한 파생 변수를 생성하였다.
+:bar_chart: **당뇨병 유무별 피쳐 분포도**
+![output](https://user-images.githubusercontent.com/91659448/147629446-e11dcee0-e6b7-4bb5-b871-a6c02e536061.png)
 
-추가적으로, 맥압, BUN/Cr 비율, AST/ALT 비율 등 당뇨병 진단과 밀접하게 관련된 다른 검사에 대해서도 조사하여 산식을 적용하여 범주화 된 변수를 생성하였고, DLP(이상지질혈증), MS(대사증후군) 등 당뇨로 발생 할 수 있는 질병과 합병증에 대한 정보도 확인하여 관련 산식을 적용하여 생성하였다.
+- 혈당과 관련 된 피쳐들(`HbA1c`, `FBG`)은 당뇨병 진단을 받은 집단이 좀 더 높은 값에 분포하고 있습니다.
+- 고밀도 콜레스테롤(`HDL`)은 당뇨병 진단을 받은 집단이 좀 더 낮은 값에 분포하고 있습니다.
+
+![image](https://user-images.githubusercontent.com/91659448/147900305-a7b6a88a-2631-4aa4-963a-5bc4e59cfac9.png)
+
+- 당뇨 위험도 측정표에 따르면 `나이`, `혈압`, 허리둘레와 관련있는 `BMI`가 위험의 요인으로 꼽고있습니다.
+- 이를 확인하기 위해 상관계수를 살펴보았습니다.
+
+:bar_chart: **Feature별 상관계수 히트맵**
+
+![image](https://user-images.githubusercontent.com/91659448/147900114-fc0470dd-115e-480b-a9b4-1e200f554335.png)
+
+- `나이`와의 상관은 `-0.06`으로 상관 관계가 거의 없어 보입니다.
+- `혈압`과 `BMI`도 크게 상관이 없어 보입니다.
+- 하지만, `혈당`과 관련 된 수치는 직접적인 당뇨 판단 요인인 만큼 약한 상관관계를 보입니다.
+- 해당 변수들에 대한 분포도를 확인해보고 어떤 경향성이 있는지를 파악해 보겠습니다.
+
+:bar_chart: **BMI별 당뇨 분포도**
+
+![image](https://user-images.githubusercontent.com/91659448/147900267-e2fa0f2f-1dd7-429a-8b78-6094f16fff44.png)
+
+- `BMI` 지수가 증가할수록 당뇨 환자의 비율이 높은 편입니다.
+
+:bar_chart:  **혈압별 당뇨 분포도**
+
+<img src='https://user-images.githubusercontent.com/91659448/147900697-3cab4cda-aaba-4d00-b541-13023846b341.png' width=800>
+
+- 당뇨 그룹의 집단이 혈압이 높은 환자들의 비중이 더 많았습니다.
+
+:bar_chart: **혈당별 당뇨 분포도**
+
+![image](https://user-images.githubusercontent.com/91659448/147900633-82370d40-1aa3-4063-99bd-cbf396d1e2f0.png)
+
+- 혈당이 높은 그룹이 낮은 그룹보다 당뇨의 비율이 높은 편입니다.
 
 ---
-## 모델링<a class="anchor" id = "c4"> </a>
+## 3. 모델링<a class="anchor" id = "c4"> </a>
 
 ### 모델링 과정
 
@@ -330,60 +286,23 @@ Permutation Importance로 당뇨병 진단 예측에 있어 변수 중요도 확
 
 ---
 
-## 한계 및 과제<a class="anchor" id = "c6"> </a>
+## 4. 프로젝트 한계 및 과제
+### 한계점
+- 모델을 충분히 학습시키고 더 좋은 성과를 내기에는 데이터가 조금 부족 했었습니다. 만약 시간과 데이터가 더 주어진다면, 더 좋은 모형을 만들어 정확한 예측을 할 수 있을 거라 생각합니다. 
+- 데이터에 대한 설명이 부족했습니다. 최대한 정보를 모아 데이터를 이해해 모델을 학습시켰지만, 아쉽게도 버려야 하는 컬럼들이 존재했습니다. 활용하지 못한 변수도 포함해 적용해 본다면, 더 나은 성과를 내지 않았을까 생각됩니다.
+- 의료 데이터에 대한 지식이 부족해 간단한 관계들만 확인 해 보았다는 것이 아쉬움이 큽니다. 
+- 각 수치들이 학회 및 연구 별로 다양한 방법으로 범주화를 적용하고 있습니다. 우리는 그 중 하나의 방법으로만 적용해 보았는데, 다양한 기준점을 갖고 값을 그룹화 했었으면 어땠을 까하는 아쉬움이 남았습니다.
 
-> 수정 필요
->> 찡찡대지 말고, 극복 할 수 있는 한계점
-
-![image](https://user-images.githubusercontent.com/38115693/147505395-b6e6d8e0-55d1-4983-b8eb-0cfb173ddd64.png)
-
-1. 모델을 충분히 학습시키기에 데이터가 조금 부족했지 않나 생각 되었다. 만약 데이터를 더 확보 할 수 있었다면, 더 좋은 예측 모형을 만들 수 있었을 것 같다.
-2. 데이터에 대한, 각 변수들에 대한 정보가 없어 일일이 조사하고 확인해 보았지만, 그럼에도 불구하고 결국 활용하지 못한 피처도 있어 아쉬움으로 남는다.
-3. 셋째는 도메인 지식이다. 당뇨병에 대한 의료적인 지식이 부족했다는 점인데, 만약 더 깊은 도메인 지식이 있었다면, 더 심도 깊은 분석과 모델링을 시도해 볼 수 있지 않았을까 생각이 들었다.
-4. 마지막으로, 온라인 자료, 연구/학술자료, 또 분야 별로 검사하고 진단하는 수치들에 대한 판단 기준이 다른 경우가 많았다. 이에 따라, 변수들에 대한 범위를 나누고 범주화 하는 과정에서 기준 값을 잡는 것에 어려움이 있었다.
-
-![image](https://user-images.githubusercontent.com/38115693/147505585-0cc82c61-471a-4619-9ad5-6fa45dd10040.png)
-
-1. 향후엔 성별과 연령대에 따른 더 세분화 된 분류 기준을 활용하고 적용하여 학습과 모델링을 해 보겠다. 더 세분화 한다면, 더 구체적인 기준들을 적용한다면 더 성능 좋은 모델이 만들어질 것으로 기대한다.
-2. 그리고 데이터가 불균형적이고, 범주형 피처와 연속형 피처가 섞여 있는 데이터를 처리하는 데에 더욱 효과적이고 적합한 기법(리샘플링, 차원축소 등)들에 대해 더 연구해 보고, 향후 적용과 모델 업그레이드를 해 보겠다.
+### 향후 과제
+- 각 컬럼별로 성별과 연령대로 나눠 범주화 한 기준들이 존재했습니다. 이를 적용해 값들을 세분화하여 적용해 보면 좋을 것 같습니다.
+- 불균형 데이터를 다루는 방법에 대해 미숙했습니다. 또한, 범주형과 연속형 변수들이 섞여 있는 데이터에 대해 사용할 수 있는 기법들이 존재했는데 이를 적용해보며 성능이 향상 되는지를 확인할 필요가 있어보입니다.
 
 ---
-
-## 참고 자료
-
-> 수정 필요
->> APA 또는 특정 스타일로 일관성 있게 맞추기
-
-- https://www.amc.seoul.kr/asan/healthinfo/disease/diseaseDetail.do?contentId=31596
-- https://www.kosso.or.kr/newsletter/202104/sub02.html
-- https://www.hidoc.co.kr/healthstory/news/C0000633143
-- https://www.joongang.co.kr/article/24109084#home
-- https://kdca.go.kr/board/board.es?mid=a40303030000&bid=0034&act=view&list_no=716754
-- https://www.e-jkd.org/upload/pdf/jkd-2020-21-1-27.pdf
-- http://www.lecturernews.com
-- https://www.koreascience.or.kr/article/JAKO200560537773551.pdf
-- http://www.monews.co.kr/news/articleView.html?idxno=203842
-- http://www.docdocdoc.co.kr
-- https://ko.wikipedia.org/wiki/%EB%8B%B9%EB%87%A8%EB%B3%91
-- https://smtmap.com/%EA%B0%84%EC%88%98%EC%B9%98/
-- http://guro.kumc.or.kr/dept/main/index.do?DP_CODE=GRCP&MENU_ID=003036050045
-- https://www.koreascience.or.kr/article/JAKO201354840931827.pdf
-- https://www.schlab.org/guide/item/261/
-- https://m.khan.co.kr/life/health/article/201511101537195#c2b
-- http://seoulnim.com/news/lecture_v.asp?srno=7628&page=70&gubun=&keyword=
-- https://blog.naver.com/PostView.naver?blogId=i-doctor&logNo=221450543662
-- https://www.joongang.co.kr/article/21657194#home
-- https://www.ibric.org/myboard/view.php?Board=review0&id=529&filename=bc0602.pdf&fidx=2&mode=down
-- https://blog.naver.com/hyouncho2/60170417299
-- https://www.paik.ac.kr/busan/medicine/disease_info_view.asp?p_sid=1040&p_cate=A
-- https://www.cheric.org/PDF/PIC/PC19/PC19-2-0085.pdf
-- https://labtestsonline.kr/tests
-- https://m.amc.seoul.kr/asan/mobile/healthinfo/
-- https://amc.seoul.kr/asan/healthinfo/
-- https://kormedi.com/
-- http://drug.co.kr/abbreviation/
-- https://m.blog.naver.com/sorak123/222052778113
-- http://guro.kumc.or.kr/
-- https://medgongbu.tistory.com/92
-- https://wyatt37.tistory.com/10
-- http://www.koreanhypertension.org/
+## 5. 참고 문헌
+- [고려대학교구로병원 진단검사의학과](http://guro.kumc.or.kr/dept/main/index.do?DP_CODE=GRCP)
+- [대한고혈압학회](http://www.koreanhypertension.org/)
+- [대한비만학회](https://www.kosso.or.kr/)
+- [서울신경내과](http://seoulnim.com/news/lecture_v.asp?srno=7628)
+- [서울아산병원.질환백과](https://www.amc.seoul.kr/asan/main.do)
+- [순천향대부천병원 진단검사의학과](https://www.schlab.org/guide/)
+- [위키백과.당뇨병](https://ko.wikipedia.org/wiki/%EB%8B%B9%EB%87%A8%EB%B3%91)
